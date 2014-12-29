@@ -5,7 +5,7 @@
 ** Login   <meuric_a@epitech.net>
 ** 
 ** Started on  Wed Dec 17 14:59:03 2014 alban meurice
-** Last update Tue Dec 23 11:34:02 2014 alban meurice
+** Last update Mon Dec 29 18:39:18 2014 alban meurice
 */
 
 #include <stdio.h>
@@ -15,10 +15,10 @@
 int	laby[][6] = 
   {
     {1, 1, 1, 1, 1, 1},
-    {1, 0, 1, 0, 0, 1},
     {1, 0, 0, 1, 0, 1},
     {1, 1, 0, 0, 0, 1},
     {1, 0, 0, 1, 0, 1},
+    {1, 0, 1, 0, 0, 1},
     {1, 1, 1, 1, 1, 1},
   };
 
@@ -26,27 +26,37 @@ int	calc_equation(t_pers *sangoku, t_angle *result, t_vector *vector, int x)
 {
   float	k;
   int	y;
+  float	line_y;
 
   x = 0;
   y = 0;
   vector->vx = (sangoku->x + 0.5) - sangoku->x;
   vector->vy = (sangoku->y + 0,5) - sangoku->y;
-  printf("(%f, %f)\n", vector->vx, vector->vy);
+  //printf("(%f, %f)\n", vector->vx, vector->vy);
   while (x <= 6)
     {
-      k = 1;
-      //k = (x - sangoku->x) / vector->vx;
-      y = 0;
-      while (y <= 6)
+      k = (x - sangoku->x) / vector->vx;
+      if (k > 0)
+	{
+	  line_y = sangoku->y + (k * vector->vy);
+	  if (laby[x][(int)line_y] == 1)
+	    {
+	      printf("%f %d %d\n", k, x, (int)line_y);
+	      return (0);
+	    }
+	}
+      /*y = 0;
+	while (y <= 6)
 	{
 	  y = sangoku->y + (k * vector->vy);
 	  printf("y=%d, k=%f\n", y, k);
 	  if (laby[x][y] = 0)
 	    printf("'''for y=%d & x=%d / Wall'''\n", y, x);
 	  k = k + 1;
-	}      
+	  }*/
+      //printf("%f\n", k);
       x = x + 1;
-    }
+      }
 }
 
 int	main()
@@ -69,7 +79,3 @@ int	main()
   calc_equation(&sangoku, &result, &vector, x);
   return (0);
 }
-
-/* Pour faire simple, j'arrive pas a calculer un y correct, la droite que je tite dans mon labyrinthe ne reconnait pas si la case est vide (0) ou si c'est un mur (1), pour elle apparament tout vaut 1.
-Cependant apparament Vx et Vy sont bon.
-Peut tu m'aider s'il te plait a comprendre comment faire une jolie droite pour récupérer la distance entre moi et le mur que je dois afficher ? */
